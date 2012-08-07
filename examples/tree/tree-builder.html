@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>GeoExt.ux.tree.LayerTreeBuilder UX</title>
+    
+    <link rel="stylesheet" type="text/css"
+          href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css"
+          href="http://cdn.sencha.io/ext-4.1.0-gpl/examples/shared/example.css" />
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/tree.css" />
+    <link rel="stylesheet" type="text/css"
+          href="../ux/resources/css/LayerTreeBuilder.css" />
+
+      <script type="text/javascript" charset="utf-8"
+              src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-dev.js"></script>
+
+      <!-- You should definitely consider using a custom single-file
+           version of OpenLayers -->
+      <script src="http://openlayers.org/api/2.12/OpenLayers.js"></script>
+
+      <script type="text/javascript" src="../loader.js"></script>
+      <script type="text/javascript" src="tree-builder.js"></script>
+
+    </head>
+    <body>
+      <div id="desc">
+        <h1>GeoExt.ux.tree.LayerTreeBuilder UX</h1>
+        <p>
+          This tree automatically builds nodes based on the layer records in a
+          GeoExt.data.LayerStore. The layer 'group' property determines where
+          to put the layer node and creates the missing nodes when needed.
+        </p>
+        <p>
+          In this example, the "Parks" layer has the 'group' property set to
+          "GMap/Polygons". The "/" character is the subfolder delimiter. There
+          are various other interesting properties a layer can have, such as
+          hideInLegend, and the tree itself too.
+        </p>
+        <p>
+          The javascript file used in this example is not minified so it is
+          readable. See
+          <a href="tree-builder.js">tree-builder.js</a>.
+        </p>
+      </div>
+    </body>
+  </html>
