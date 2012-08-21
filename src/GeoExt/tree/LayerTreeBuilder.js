@@ -8,6 +8,7 @@
 
 /*
  * @include GeoExt/tree/Panel.js
+ * @include GeoExt/tree/LayerGroupContainer.js
  * @include GeoExt/data/LayerStore.js
  * @include GeoExt/panel/Map.js
  */
@@ -15,14 +16,14 @@
 /**
  *
  */
-Ext.define('GeoExt.ux.tree.LayerTreeBuilder', {
+Ext.define('GeoExt.tree.LayerTreeBuilder', {
     extend: 'GeoExt.tree.Panel',
     requires: [
         'GeoExt.data.LayerStore',
         'GeoExt.panel.Map',
-        'GeoExt.ux.tree.GroupLayerContainer'
+        'GeoExt.tree.LayerGroupContainer'
     ],
-    alias: 'widget.gx_ux_layertreebuilder',
+    alias: 'widget.gx_layertreebuilder',
 
     /** 
      * @cfg {String} Text to display the default "base layers" group (i18n).
@@ -36,9 +37,9 @@ Ext.define('GeoExt.ux.tree.LayerTreeBuilder', {
 
     layerStore: null,
 
-    wmsLegendNodes: true,
+    enableWmsLegends: true,
 
-    vectorLegendNodes: true,
+    enableVectorLegends: true,
 
     initComponent: function(){
         Ext.apply(this, {
@@ -128,12 +129,12 @@ Ext.define('GeoExt.ux.tree.LayerTreeBuilder', {
                 childNode = {
                     expanded: (layer && layer.visibility),
                     plugins: [{
-                        enableLegend: group != this.baseLayersText &&
-                                      group != this.otherLayersText,
+                        enableLegends: group != this.baseLayersText &&
+                                       group != this.otherLayersText,
+                        enableVectorLegends: this.enableVectorLegends,
+                        enableWmsLegends: this.enableWmsLegends,
                         layerGroup: groupString,
-                        ptype: 'gx_ux_grouplayercontainer',
-                        vectorLegendNodes: this.vectorLegendNodes,
-                        wmsLegendNodes: this.wmsLegendNodes
+                        ptype: 'gx_layergroupcontainer'
                     }],
                     text: group
                 };

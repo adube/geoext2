@@ -16,22 +16,22 @@
 /**
  *
  */
-Ext.define('GeoExt.ux.tree.GroupLayerContainer', {
+Ext.define('GeoExt.tree.LayerGroupContainer', {
     extend: 'GeoExt.tree.LayerContainer',
     requires: [
         'GeoExt.container.WmsLegend',
         'GeoExt.container.VectorLegend',
         'GeoExt.data.LayerStore'
     ],
-    alias: 'plugin.gx_ux_grouplayercontainer',
+    alias: 'plugin.gx_layergroupcontainer',
     
     defaultText: 'Layers',
 
-    enableLegend: true,
+    enableLegends: true,
 
-    wmsLegendNodes: true,
+    enableWmsLegends: true,
 
-    vectorLegendNodes: true,
+    enableVectorLegends: true,
 
     layerGroup: null,
     
@@ -45,13 +45,13 @@ Ext.define('GeoExt.ux.tree.GroupLayerContainer', {
             superProto = GeoExt.tree.LayerLoader.prototype;
 
         // set the 'createNode' method for the loader
-        if (me.enableLegend) {
+        if (me.enableLegends) {
             createNode = function(attr) {
                 var record = this.store.getByLayer(attr.layer),
                     layer = record.getLayer();
 
                 if (layer instanceof OpenLayers.Layer.WMS &&
-                    me.wmsLegendNodes
+                    me.enableWmsLegends
                 ) {
                     attr.component = {
                         xtype: "gx_wmslegend",
@@ -59,10 +59,10 @@ Ext.define('GeoExt.ux.tree.GroupLayerContainer', {
                         showTitle: false,
                         hidden: !layer.visibility || layer.hideInLegend
                             || !layer.inRange,
-                        cls: "gx-ux-layertreebuilder-legend"
+                        cls: "gx-layertreebuilder-legend"
                     };
                 } else if (layer instanceof OpenLayers.Layer.Vector &&
-                           me.vectorLegendNodes
+                           me.enableVectorLegends
                 ) {
                     attr.component = {
                         xtype: "gx_vectorlegend",
@@ -70,7 +70,7 @@ Ext.define('GeoExt.ux.tree.GroupLayerContainer', {
                         showTitle: false,
                         hidden: !layer.visibility || layer.hideInLegend
                             || !layer.inRange,
-                        cls: "gx-ux-layertreebuilder-legend"
+                        cls: "gx-layertreebuilder-legend"
                     };
                 }
 

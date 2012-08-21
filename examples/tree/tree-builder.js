@@ -9,16 +9,11 @@
 Ext.require([
     'Ext.container.Viewport',
     'Ext.layout.container.Border',
-    'GeoExt.tree.Panel',
-    'Ext.tree.plugin.TreeViewDragDrop',
-    'GeoExt.panel.Map',
-    'GeoExt.tree.OverlayLayerContainer',
-    'GeoExt.tree.BaseLayerContainer',
     'GeoExt.data.LayerTreeModel',
+    'GeoExt.panel.Map',
     'GeoExt.tree.View',
     'GeoExt.tree.Column',
-    'GeoExt.ux.tree.LayerTreeBuilder',
-    'GeoExt.ux.tree.GroupLayerContainer'
+    'GeoExt.tree.LayerTreeBuilder'
 ]);
 
 var mapPanel, tree;
@@ -114,7 +109,7 @@ Ext.application({
                 ),
                 // group: GMap/Lines
                 new OpenLayers.Layer.WMS(
-                    "Railroads",
+                    "Railroads (visibility: false)",
                     url,
                     {
                         layers: "rail",
@@ -129,7 +124,7 @@ Ext.application({
                     }
                 ),
                 new OpenLayers.Layer.WMS(
-                    "Roads (visibility: false)",
+                    "Roads (visibility: true)",
                     url,
                     {
                         layers: "road",
@@ -196,7 +191,7 @@ Ext.application({
             }
         );
 
-        tree = Ext.create('GeoExt.ux.tree.LayerTreeBuilder', {
+        tree = Ext.create('GeoExt.tree.LayerTreeBuilder', {
             border: true,
             layerStore: mapPanel.layers,
             region: "west",
