@@ -92,13 +92,12 @@ Ext.define('GeoExt.tree.LayerTreeBuilder', {
 
         // then, create the nodes according to the records
         Ext.each(records, function(record, index) {
-            var layer = record.getLayer(),
-                group = layer.options.group.split('/'),
-                groupString = layer.options.group;
-
+            var layer = record.getLayer();
             if (layer.displayInLayerSwitcher === false) {
                 return;
             }
+            var group = layer.options.group.split('/'),
+                groupString = layer.options.group;
 
             // layers with group property set as empty string are added to
             // the root node
