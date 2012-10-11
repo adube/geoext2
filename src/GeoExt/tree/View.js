@@ -58,7 +58,9 @@ Ext.define('GeoExt.tree.View', {
 
         var component = node.get('component');
 
-        if(component) {
+        // helps make sure that icons are not created several times
+        // for a leaf node that has an icon
+        if(component && el.dom.childNodes.length==0) {
             cmpObj = Ext.ComponentManager.create(component);
 
             cmpObj.render(el);
