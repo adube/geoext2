@@ -47,6 +47,12 @@ Ext.define('GeoExt.tree.LayerGroupContainer', {
         // set the 'createNode' method for the loader
         if (me.enableLegends) {
             createNode = function(attr) {
+                if (attr.layer.href)  {
+                    attr.href = attr.layer.href;
+                    attr.cls = 'linknode';
+                    if (attr.layer.hrefTarget) attr.hrefTarget = attr.layer.hrefTarget;
+                }
+                if (attr.layer.qtip) attr.qtip = attr.layer.qtip;
                 var record = this.store.getByLayer(attr.layer),
                     layer = record.getLayer();
 

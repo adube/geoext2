@@ -40,6 +40,10 @@ Ext.define('GeoExt.tree.LayerTreeBuilder', {
     enableWmsLegends: true,
 
     enableVectorLegends: true,
+    
+    checkableContainerGroupNodes: true,
+
+    checkableLeafGroupNodes: true,
 
     initComponent: function(){
         Ext.apply(this, {
@@ -70,7 +74,41 @@ Ext.define('GeoExt.tree.LayerTreeBuilder', {
             scope: this
         });
 
+        // add a handler for checkboxes associated with nodes
+        this.on({
+            'checkchange' : function(node) {
+                // If a parent node is unchecked, uncheck all
+                // the children and vice versa
+                var me = this;
+                if(node.data.checked) {
+                    node.eachChild(function(child) {
+                        child.set('checked',true);
+                        me.fireEvent('checkchange',child,true);
+                    });
+                } else {
+                    node.eachChild(function(child) {
+                        child.set('checked',false);
+                        me.fireEvent('checkchange',child,false);
+                    });
+                }
+                this.updateCheckboxes(node.parentNode);
+            },
+            scope: this
+        });
+
         this.callParent(arguments);
+    },
+
+    // make sure that a parent checkbox is only checked if all of it's
+    // children are also checked
+    updateCheckboxes: function(node) {
+        if(node.isRoot()) return;
+        var allChecked = true;
+        for(var i=0; i<node.childNodes.length; i++) {
+            if(!node.childNodes[i].data.checked) allChecked = false;
+        }
+        node.set('checked',allChecked);
+        this.updateCheckboxes(node.parentNode);
     },
 
     onLayerAdded: function(store, records, index) {
@@ -92,13 +130,13 @@ Ext.define('GeoExt.tree.LayerTreeBuilder', {
 
         // then, create the nodes according to the records
         Ext.each(records, function(record, index) {
-            var layer = record.getLayer(),
-                group = layer.options.group.split('/'),
-                groupString = layer.options.group;
-
+            var layer = record.getLayer();
             if (layer.displayInLayerSwitcher === false) {
                 return;
             }
+            
+            var group = layer.options.group.split('/'),
+                groupString = layer.options.group;
 
             // layers with group property set as empty string are added to
             // the root node
@@ -119,7 +157,8 @@ Ext.define('GeoExt.tree.LayerTreeBuilder', {
     addGroupNodes: function(groups, parentNode, groupString, layerRecord){
         var group = groups.shift(),
             childNode = this.getNodeByText(parentNode, group),
-            layer = layerRecord.getLayer();
+            layer = layerRecord.getLayer(),
+            checkableNode = false;
 
         // if the childNode doesn't exist, we need to create and append it
         if (!childNode) {
@@ -148,17 +187,35 @@ Ext.define('GeoExt.tree.LayerTreeBuilder', {
                 };
             }
 
+            
+            if (childNode.plugins && childNode.plugins[0] && childNode.plugins[0].pype == "gx_layergroupcontainer") {
+                checkableNode = this.checkableLeafGroupNodes;
+            } else {
+                checkableNode = this.checkableContainerGroupNodes && this.checkableLeafGroupNodes;
+            }
+
+            // apply checkbox if option is set, set to checked by default - the
+            // listener for the checkchange has already been set in initComponent
+            if (checkableNode && group != this.baseLayersText &&
+                group != this.otherLayersText && (!layer || !layer.isBaseLayer)) {
+                childNode.checked = true;
+            }
+
             parentNode.appendChild(childNode);
 
             childNode = this.getNodeByText(parentNode, group);
         }
 
         // if node contains any child or grand-child with a visible layer,
-        // expand it
+        // expand it, else if it contains any child or grand-child with a
+        // non-visible layer and it can have a checkbox, uncheck it
         if (layer && layer.visibility) {
             window.setTimeout(function() {
                 childNode.expand();
             });
+        } else if(checkableNode && group != this.baseLayersText &&
+            group != this.otherLayersText && (!layer || !layer.isBaseLayer)) {
+            childNode.data.checked = false;
         }
 
         if (groups.length != 0){
