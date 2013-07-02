@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2012 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2013 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -20,7 +20,7 @@
  */
 Ext.define('GeoExt.data.ScaleStore', {
     requires: [
-        'GeoExt.data.ScaleModel', 
+        'GeoExt.data.ScaleModel',
         'GeoExt.panel.Map'
     ],
     extend: 'Ext.data.Store',

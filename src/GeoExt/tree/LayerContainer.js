@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2012 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2013 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See https://github.com/geoext/geoext2/blob/master/license.txt for the full
@@ -23,7 +23,7 @@
  * the root node in the example below:
  *
  *     var mapPanel = Ext.create('GeoExt.panel.Map', {
- *         layers: [new OpenLayers.Layer('foo)]
+ *         layers: [new OpenLayers.Layer('foo')]
  *     });
  *     
  *     var treeStore = Ext.create('Ext.data.TreeStore', {
